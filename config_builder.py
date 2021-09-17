@@ -30,7 +30,7 @@ def ensure_in_spec(spec, key):
     if not key in spec:
         value = raw_input("Please enter a value for %s, or q to quit: " % key)
         if value.lower() == "q":
-            print("Quitting.")
+            print "Quitting."
             sys.exit(0)
         spec[key] = value
 
@@ -175,9 +175,9 @@ def single_vocab_file(spec, required_files_dict, vocab_fname):
         return vocab_file_list[0]
     vocab = Counter()
     for fname in vocab_file_list:
-        print(fname)
+        print fname
         vocab = update_vocab(vocab, fname)
-        print("vocab size is now %d" % len(vocab))
+        print "vocab size is now %d" % len(vocab)
 
     vocab_string = ""
     for word, count in vocab.most_common():
@@ -298,8 +298,8 @@ def generate_training_spec(spec, include_dev=False):
         if param in spec:
             training_spec[param] = spec[param]
 
-    print("===========================")
-    print("Training Spec:")
+    print "==========================="
+    print "Training Spec:"
     import pprint
     pp = pprint.PrettyPrinter(indent=2)
     pp.pprint(training_spec)
@@ -440,7 +440,6 @@ def write_bash_scripts(path, spec):
 
     script = """
     #!/bin/bash
-
     cwd=$(pwd)
     cd %s/
     export MODEL_DIR=%s
@@ -449,7 +448,6 @@ def write_bash_scripts(path, spec):
     DEV_GOLD="%s"
     TRAIN_QUESTIONS="%s"
     TRAIN_GOLD="%s"
-
     echo $MODEL_DIR >> $MODEL_DIR/experiment_log.txt
     echo "Starting train: $(date)" >> $MODEL_DIR/experiment_log.txt
     python -m bin.train --config_paths="$CONFIG_DIR/train.yml"
@@ -460,12 +458,11 @@ def write_bash_scripts(path, spec):
     script_fname = os.path.join(model_dir, "experiment.sh")
     with open(script_fname, 'w') as f:
         f.write(script)
-    os.chmod(script_fname, 0o755)
+    os.chmod(script_fname, 0775)
     
     
     script_infer = """
     #!/bin/bash
-
     cwd=$(pwd)
     cd %s/
     export MODEL_DIR=%s
@@ -474,7 +471,6 @@ def write_bash_scripts(path, spec):
     DEV_GOLD="%s"
     TRAIN_QUESTIONS="%s"
     TRAIN_GOLD="%s"
-
     echo $MODEL_DIR >> $MODEL_DIR/experiment_log.txt
     echo "Starting infer: $(date)" >> $MODEL_DIR/experiment_log.txt
     python -m bin.infer --config_path="$CONFIG_DIR/infer.yml" > $MODEL_DIR/output.txt
@@ -490,20 +486,18 @@ def write_bash_scripts(path, spec):
     script_fname = os.path.join(model_dir, "experiment_infer.sh")
     with open(script_fname, 'w') as f:
         f.write(script_infer)
-    os.chmod(script_fname, 0o755)
+    os.chmod(script_fname, 0775)
     
     
 
     test_script = """
     #!/bin/bash
-
     cwd=$(pwd)
     cd %s/
     export MODEL_DIR=%s
     export CONFIG_DIR=$MODEL_DIR/config
     TEST_QUESTIONS="%s"
     TEST_GOLD="%s"
-
     echo $MODEL_DIR >> $MODEL_DIR/experiment_log.txt
     echo "Starting infer on test: $(date)" >> $MODEL_DIR/experiment_log.txt
     python -m bin.infer --config_path="$CONFIG_DIR/infer_test.yml" > $MODEL_DIR/test_output.txt
@@ -516,7 +510,7 @@ def write_bash_scripts(path, spec):
     script_fname = os.path.join(model_dir, "run_test.sh")
     with open(script_fname, 'w') as f:
         f.write(test_script)
-    os.chmod(script_fname, 0o755)
+    os.chmod(script_fname, 0775)
 
     curves_script = """
     #!/bin/bash
@@ -526,7 +520,6 @@ def write_bash_scripts(path, spec):
     mkdir -p $PRED_DIR
     DEV_GOLD="%s"
     TRAIN_GOLD="%s"
-
     cwd=$(pwd)
     cd %s/
     for fname in $MODEL_DIR/model.ckpt-*.index
@@ -542,10 +535,8 @@ def write_bash_scripts(path, spec):
               --config_path="$CONFIG_DIR/infer.yml"\\
               --checkpoint_path ${MODEL_DIR}/model.ckpt-$num \\
               >  ${PRED_DIR}/predictions-$num.txt
-
             echo "==================TRAIN================" \\
               >> ${PRED_DIR}/predictions-$num.txt
-
             python -m bin.infer \\
               --config_path="$CONFIG_DIR/infer_train.yml"\\
               --checkpoint_path ${MODEL_DIR}/model.ckpt-$num \\
@@ -558,7 +549,7 @@ def write_bash_scripts(path, spec):
     script_fname = os.path.join(model_dir, "plot_training_curves.sh")
     with open(script_fname, 'w') as f:
         f.write(curves_script)
-    os.chmod(script_fname, 0o755)
+    os.chmod(script_fname, 0775)
 
 def main():
     parser = argparse.ArgumentParser(description="Build config files "

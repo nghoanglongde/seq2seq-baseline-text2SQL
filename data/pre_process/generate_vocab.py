@@ -55,7 +55,7 @@ def get_encode_Query(infile_group, outfile, infile, output=False):
         outfile = open(outfile, 'w')
     
     cnt = collections.Counter()    
-    with open(infile, encoding='utf-8') as f:
+    with open(infile) as f:
         ex_list = json.load(f)
         for nl_sql_dict in ex_list:
             tokens = strip_nl(nl_sql_dict["question"])                    
@@ -70,7 +70,7 @@ def get_encode_Query(infile_group, outfile, infile, output=False):
                 
         if output:
             outfile.close()
-    print("max length nl of", infile, "is", max_nl)
+    print "max length nl of", infile, "is", max_nl
     return cnt
 
 
@@ -84,12 +84,12 @@ def get_mask(infile_group, outfile, infile, vocabfile, output=True):
     if output:
         outfile = open(outfile, 'w')
     vocab_ls = []
-    with open(vocabfile, "r", encoding='utf-8') as vocab:
+    with open(vocabfile, "r") as vocab:
         for line in vocab:
             items = line.split()
             vocab_ls.append(items[0])
-    print("decode vocab length is", len(vocab_ls))
-    with open(infile_name, encoding='utf-8') as f:
+    print "decode vocab length is", len(vocab_ls)
+    with open(infile_name) as f:
         ex_list = json.load(f)
         for nl_sql_dict in ex_list:
             if infile != 'train':
@@ -124,7 +124,7 @@ def get_decode_SQL(infile_group, outfile, infile, output=False, outputdb=False):
     if output:
         outfile = open(outfile, 'w')
     
-    with open(infile, encoding='utf-8') as f:
+    with open(infile) as f:
         ex_list = json.load(f)
         for nl_sql_dict in ex_list:
             tokens = strip_query(nl_sql_dict["query"])       
@@ -143,14 +143,14 @@ def get_decode_SQL(infile_group, outfile, infile, output=False, outputdb=False):
                     outfile.write("{}\t{}\n".format(nl_sql_dict["query"].encode('utf-8').lower().replace("\t", " "), nl_sql_dict["db_id"]))
         if output:
             outfile.close()
-    print("max sql length of", infile, "is", max_sql)
+    print "max sql length of", infile, "is", max_sql
     return cnt
 
 def get_schema_vocab(infile_group, infile):
     used_databases = set()
     cnt = collections.Counter()
     db_dict_rev = {}
-    with open(infile_group[infile], encoding='utf-8') as f:
+    with open(infile_group[infile]) as f:
         ex_list = json.load(f)
         for table_dict in ex_list:
             db_id = table_dict["db_id"]
@@ -257,6 +257,3 @@ if __name__ == "__main__":
         get_mask(infile_group, os.path.join(prefix, "test", "test_decoder_mask.txt"), "test",os.path.join(prefix, "decode_vocab.txt"), True)
         get_mask(infile_group, os.path.join(prefix, "dev", "dev_decoder_mask.txt"), "dev",os.path.join(prefix, "decode_vocab.txt"), True)
         get_mask(infile_group, os.path.join(prefix, "train", "train_decoder_mask.txt"), "train", os.path.join(prefix, "decode_vocab.txt"),True)
-
-
-    
