@@ -1,0 +1,2 @@
+Thu Sep 16 21:16:03 SEAST 2021 BasicSeq2Seq_tune_model_data
+Thu Sep 16 21:20:10 SEAST 2021 BasicSeq2Seq_tune_model_data
