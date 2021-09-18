@@ -1,6 +1,6 @@
 ## Seq2Seq Baselines
 
-This is a documentation for for the sequence-to-sequence model on 2 datasets (data, data_radn_split) with 3 methods (basic, attention, attention+copy) each. With mask and tune with glove embedding.
+This is a documentation for the sequence-to-sequence model on 2 datasets (Spider, ViText2SQL) with 3 methods (basic, attention, attention+copy) each. With mask and tune with glove embedding.
 
 ## Dependency
 
