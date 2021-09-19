@@ -120,21 +120,21 @@ def strip_query(query):
 
 def count_databases(infile_group):
     content = set()
-    with open(infile_group['dev'], encoding='utf-8') as f:
+    with open(infile_group['dev']) as f:
         ex_list = json.load(f)
         for table_dict in ex_list:
             content.add(table_dict["db_id"])
     dev_count = len(content)
     print("the number of dev tables are", dev_count)
     
-    with open(infile_group['train'], encoding='utf-8') as f:
+    with open(infile_group['train']) as f:
         ex_list = json.load(f)
         for table_dict in ex_list:
             content.add(table_dict["db_id"])
     train_count = len(content) - dev_count
     print("the number of train tables are",train_count)
     
-    with open(infile_group['test'], encoding='utf-8') as f: 
+    with open(infile_group['test']) as f: 
         ex_list = json.load(f)
         for table_dict in ex_list:
             db_id = table_dict["db_id"]
